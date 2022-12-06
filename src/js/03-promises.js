@@ -3,7 +3,7 @@ const setAmount = document.querySelector('input[name=amount]');
 const step = document.querySelector('input[name=step]');
 const delay = document.querySelector('input[name=delay]');
 const form = document.querySelector('form.form');
-const submitButton=document.querySelector("button[type=submit]");
+const submitButton = document.querySelector('button[type=submit]');
 function createPromise(position, delay) {
   const shouldResolve = Math.random() > 0.3;
   const promise = new Promise((resolve, reject) => {
@@ -24,6 +24,7 @@ const promisesGenerator = event => {
   const setAmountValue = Number(setAmount.value);
   let stepValue = Number(step.value);
   let delayValue = Number(delay.value);
+  submitButton.disabled = true;
   for (let i = 0; i < setAmountValue; i++) {
     promisesValue = i + 1;
     createPromise(promisesValue, delayValue)
@@ -31,30 +32,21 @@ const promisesGenerator = event => {
         Notiflix.Notify.success(
           `✅ Fulfilled promise ${position} in ${delay}ms`
         );
-        submitButton.disabled=true;
       })
-      
+
       .catch(({ position, delay }) => {
         Notiflix.Notify.failure(
           `❌ Rejected promise ${position} in ${delay}ms`
         );
       });
-      
+
     delayValue += stepValue;
   }
-};
-// const blockIfPromisesAreSet=()=>{
+  const timeBeforeButtonDisable = delayValue + (stepValue - 1) * setAmountValue; //ciekawe, ze nie trzeba uwzgledniac
+  // nawiasow jesli chodzi o kolejnosc dzialan
   
-//   submitButton.disabled=true;
-// }
+  setTimeout(() => {
+    submitButton.disabled = false;
+  }, timeBeforeButtonDisable);
+};
 form.addEventListener('submit', promisesGenerator);
-const reEnableButton=()=>{
-   promisesGenerator().then(()=>{
-    submitButton.disabled=false;
-   }) 
-        
-    };
-
-submitButton.addEventListener("click", reEnableButton)
-
-// submitButton.addEventListener("click",blockIfPromisesAreSet)
