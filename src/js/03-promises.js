@@ -3,7 +3,7 @@ const setAmount = document.querySelector('input[name=amount]');
 const step = document.querySelector('input[name=step]');
 const delay = document.querySelector('input[name=delay]');
 const form = document.querySelector('form.form');
-
+const submitButton=document.querySelector("button[type=submit]");
 function createPromise(position, delay) {
   const shouldResolve = Math.random() > 0.3;
   const promise = new Promise((resolve, reject) => {
@@ -31,13 +31,30 @@ const promisesGenerator = event => {
         Notiflix.Notify.success(
           `✅ Fulfilled promise ${position} in ${delay}ms`
         );
+        submitButton.disabled=true;
       })
+      
       .catch(({ position, delay }) => {
         Notiflix.Notify.failure(
           `❌ Rejected promise ${position} in ${delay}ms`
         );
       });
+      
     delayValue += stepValue;
   }
 };
+// const blockIfPromisesAreSet=()=>{
+  
+//   submitButton.disabled=true;
+// }
 form.addEventListener('submit', promisesGenerator);
+const reEnableButton=()=>{
+   promisesGenerator().then(()=>{
+    submitButton.disabled=false;
+   }) 
+        
+    };
+
+submitButton.addEventListener("click", reEnableButton)
+
+// submitButton.addEventListener("click",blockIfPromisesAreSet)

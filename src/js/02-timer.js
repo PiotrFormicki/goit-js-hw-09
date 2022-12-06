@@ -25,7 +25,7 @@ const options = {
   onClose(selectedDates) {
     console.log(selectedDates[0]);
     clearInterval(interval);
-    userDate = selectedDates[0].getTime();
+    let userDate = selectedDates[0].getTime();
     let currentDate = options.defaultDate.getTime();
     dateInMs = userDate - currentDate;
     //Jeśli użytkownik wybrał datę z przeszłości,
